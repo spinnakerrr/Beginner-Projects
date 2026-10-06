@@ -1,0 +1,2694 @@
+from telegram import Update
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    ContextTypes,
+)
+import random
+import datetime
+import os
+from collections import defaultdict, deque
+
+
+# ============================================================
+# CORGIBOT 2.1
+# 21ST CENTURY ROMANCES
+# ============================================================
+#
+# A strange little literary organism living inside 21CR.
+#
+# Corgibot contains:
+#
+# - Neurodivergent romance
+# - Digital intimacy
+# - Long-distance love
+# - Physical closeness
+# - Literary fragments
+# - Midnight melancholy
+# - Romance
+# - Weird writing prompts
+# - Haikus
+# - Manifestos
+# - Corgi transmissions
+# - Oracle messages
+# - Writing prompts
+# - BEAR'S PERSONAL 21CR POETRY ARCHIVE
+#
+# Your personal writing lives separately in:
+#
+#     my_poetry.txt
+#
+# Add new writing there without touching this Python file.
+#
+# Separate individual pieces with:
+#
+#     ---
+#
+# ============================================================
+
+
+# ============================================================
+# BOT TOKEN
+# ============================================================
+#
+# IMPORTANT:
+# Replace the placeholder below with your NEW token from
+# BotFather.
+#
+# NEVER share this token publicly.
+#
+# ============================================================
+
+TOKEN = "ENTER BOT TOKEN HERE"
+
+
+# ============================================================
+# PERSONAL POETRY FILE
+# ============================================================
+
+POETRY_FILE = "my_poetry.txt"
+
+
+# ============================================================
+# AUTOMATIC POSTING
+# ============================================================
+
+MORNING_TIME = datetime.time(hour=9, minute=0)
+EVENING_TIME = datetime.time(hour=19, minute=0)
+NIGHT_TIME = datetime.time(hour=23, minute=0)
+
+
+# ============================================================
+# 1. NEURODIVERGENT / AUTISTIC ROMANCE
+# ============================================================
+
+AUTISM = [
+
+"""
+There is a particular tenderness in being loved by someone
+who does not require your nervous system to perform normality
+for their comfort.
+""",
+
+"""
+Two people can love each other without becoming easier
+to understand.
+
+Sometimes love is the decision to keep learning the map.
+""",
+
+"""
+She did not need someone to make the world quieter.
+
+She needed someone who would believe her when she said
+the world was loud.
+""",
+
+"""
+There are forms of intimacy that look very ordinary
+from the outside.
+
+Sharing a routine.
+Sending the same photograph every morning.
+Sitting beside each other without speaking.
+
+Some people spend their whole lives looking for
+permission to be ordinary beside someone.
+""",
+
+"""
+Perhaps one of the deepest forms of romance is being believed
+the first time you explain what hurts.
+""",
+
+"""
+Love is not always knowing what the other person needs.
+
+Sometimes it is knowing that when they tell you,
+you will listen.
+""",
+
+"""
+Two nervous systems meet.
+
+Neither understands the other's weather.
+
+So they learn the forecast.
+""",
+
+"""
+There is something beautiful about a person who has spent
+years translating themselves finally meeting someone who
+asks for the original language.
+""",
+
+"""
+I do not want to make your mind easier for me.
+
+I want to become better at understanding it.
+""",
+
+"""
+Sometimes affection looks like information.
+
+Here is the thing I learned today.
+Here is why it reminded me of you.
+Here is the obscure historical detail you absolutely did
+not ask for.
+
+Here.
+
+I thought you might like this.
+""",
+
+"""
+Parallel play is one of the quiet miracles of intimacy.
+
+Two people doing different things.
+
+Neither demanding performance.
+
+Neither disappearing.
+
+Just:
+
+here.
+""",
+
+"""
+Maybe romance is not finding someone who understands every
+part of you.
+
+Maybe it is finding someone curious enough to keep asking.
+""",
+
+"""
+A person can need solitude without needing less love.
+
+Sometimes solitude is how the machinery repairs itself.
+""",
+
+"""
+Love should not require an apology for having a nervous system.
+""",
+
+"""
+There are people who say:
+
+"Why are you being distant?"
+
+And there are people who say:
+
+"Do you want me nearby while you have some space?"
+
+The second kind are dangerous.
+
+You may accidentally fall in love with them.
+""",
+
+"""
+I want to know your patterns.
+
+Not so I can predict you.
+
+So I can recognize when something has changed.
+""",
+
+"""
+Perhaps trust is partly this:
+
+I can tell you that I am overwhelmed
+without wondering whether you will interpret
+overwhelm as rejection.
+""",
+
+"""
+There is an intimacy in literal language.
+
+No performance.
+No hidden examination.
+No requirement to decode what someone "really meant."
+
+Just:
+
+I love you.
+
+I mean it.
+""",
+
+"""
+Some people experience romance as fireworks.
+
+Others experience it as the gradual reduction
+of alarms.
+""",
+
+"""
+You don't have to become less complicated
+to become more loved.
+""",
+
+"""
+A safe person is not someone who never misunderstands you.
+
+A safe person is someone who lets misunderstanding
+be corrected without turning correction into punishment.
+""",
+
+"""
+Sometimes the most romantic sentence in the world is:
+
+"You don't have to talk right now."
+""",
+
+"""
+Love is not the removal of boundaries.
+
+It is discovering that boundaries can have doors.
+""",
+
+"""
+I want to learn which kinds of silence mean:
+
+"please come closer"
+
+and which mean:
+
+"please let me breathe."
+
+That distinction feels like love.
+""",
+
+"""
+The body remembers safety before language can explain it.
+
+Sometimes love is simply the place where the shoulders
+finally come down.
+""",
+
+"""
+There are people who want to be needed.
+
+There are people who want to be wanted.
+
+And then there are people who understand that being trusted
+with someone's vulnerability is something else entirely.
+""",
+
+"""
+I don't want to rescue you from yourself.
+
+I want to be someone you do not have to defend yourself from.
+""",
+
+"""
+Maybe unmasking is not becoming a different person.
+
+Maybe it is finally discovering which parts were never
+supposed to be hidden.
+""",
+
+"""
+Romance between unusual minds has its own weather.
+
+Sometimes clear.
+
+Sometimes overwhelming.
+
+Sometimes two people simply sit through the storm together.
+""",
+
+"""
+Sometimes love is an extremely specific accommodation
+made without being asked for.
+
+The lights are lower.
+
+The door is closed.
+
+The food is predictable.
+
+The person is safe.
+
+Nobody calls it romance.
+
+But it is.
+""",
+
+"""
+I love the parts of you that do not translate neatly.
+
+Especially those.
+""",
+
+"""
+You don't need to explain why today is difficult.
+
+Tell me what would make today gentler.
+
+I'll listen.
+""",
+
+"""
+There is a particular kind of trust in saying:
+
+"I don't know what I need."
+
+And hearing:
+
+"That's okay. We can figure it out."
+""",
+
+"""
+Love can be a person remembering the tiny thing
+you forgot you told them.
+""",
+
+"""
+Sometimes care is not grand.
+
+Sometimes it is knowing which food you will actually eat
+when everything else feels impossible.
+""",
+
+"""
+You can be independent and still deserve somewhere
+soft to land.
+""",
+
+"""
+Being loved should not feel like being studied for defects.
+
+It should feel like someone becoming fluent in you.
+""",
+
+"""
+I don't need access to every thought you have.
+
+I just want to know that you never have to hide
+the difficult ones from me out of fear.
+""",
+
+]
+
+
+# ============================================================
+# 2. DIGITAL LOVE
+# ============================================================
+
+DIGITAL = [
+
+"""
+We invented satellites and fibre optics and encrypted messaging
+and somehow still use them to say:
+
+I wish you were here.
+""",
+
+"""
+Somewhere between the typing indicator and the delivered receipt,
+human beings invented a new way to wait for each other.
+""",
+
+"""
+A photograph is a peculiar object.
+
+It is simultaneously proof that something happened
+and proof that the thing itself is somewhere else.
+""",
+
+"""
+Maybe the internet did not make love less real.
+
+Maybe it simply gave longing somewhere to live.
+""",
+
+"""
+Your message arrived three seconds ago.
+
+My nervous system has already read it forty times.
+""",
+
+"""
+We are living inside an enormous machine built from
+electricity, glass and human attention.
+
+Somehow I still found you inside it.
+""",
+
+"""
+Love in the twenty-first century:
+
+Your face is on my screen.
+
+Your voice is in my headphones.
+
+Your body is three provinces away.
+
+And somehow you are the closest thing in the room.
+""",
+
+"""
+Maybe remembering is the oldest form of data storage.
+
+Maybe love is what happens when someone else's existence
+becomes part of your internal archive.
+""",
+
+"""
+I keep photographs of you because memory is unreliable
+and affection is an archivist.
+""",
+
+"""
+A notification is normally a trivial event.
+
+Unless it is your name.
+""",
+
+"""
+We built machines capable of transmitting information
+at almost incomprehensible speed.
+
+And still the hardest message to send is:
+
+I miss you.
+""",
+
+"""
+The cloud is not actually a cloud.
+
+But somewhere inside all that invisible machinery
+there are photographs of people who love each other.
+
+That seems important.
+""",
+
+"""
+We did not invent digital intimacy.
+
+We invented another place for human intimacy to happen.
+""",
+
+"""
+There are relationships whose geography is physical
+but whose daily life happens in a rectangle of glass.
+""",
+
+"""
+Sometimes the person on the other side of the screen
+is the most physically real thing that happened to you all day.
+""",
+
+"""
+I wonder what future historians will think of
+our screenshots.
+
+They may discover that civilization was held together
+by people saying:
+
+look at this.
+
+this made me think of you.
+""",
+
+"""
+A voice note is strange.
+
+A person can leave their voice behind
+and somehow the room changes when you play it.
+""",
+
+"""
+The typing indicator is one of the smallest suspense devices
+ever invented.
+
+Three dots.
+
+An entire emotional universe.
+""",
+
+"""
+We have made communication nearly instantaneous.
+
+Longing remains stubbornly analogue.
+""",
+
+]
+
+
+# ============================================================
+# 3. LONG DISTANCE
+# ============================================================
+
+LONG_DISTANCE = [
+
+"""
+The distance between us is measurable.
+
+The difficulty is that none of the measurements explain
+why your absence occupies so much physical space.
+""",
+
+"""
+Three provinces is a geographical fact.
+
+It is not a sufficient description of missing you.
+""",
+
+"""
+Long-distance love turns ordinary objects into relics.
+
+A hoodie.
+
+A photograph.
+
+A voice note.
+
+A receipt from a place you visited together.
+
+Small evidence of a person who is currently elsewhere.
+""",
+
+"""
+There are mornings when distance is merely geography.
+
+And there are nights when it feels almost physical.
+""",
+
+"""
+I don't think I miss you in kilometres.
+
+I miss you in gestures.
+
+In reaching for someone who isn't there.
+
+In turning to tell you something.
+
+In wanting your shoulder.
+""",
+
+"""
+One of the strangest things about loving someone far away
+is how quickly the brain learns to construct them from fragments.
+""",
+
+"""
+Your absence has become a recurring character in my day.
+""",
+
+"""
+Someday the distance between us will be measured backward.
+
+Remember when three provinces felt enormous?
+""",
+
+"""
+Long-distance love is partly an exercise in refusing
+to let geography become a synonym for impossibility.
+""",
+
+"""
+The map says we are far apart.
+
+The messages disagree.
+""",
+
+"""
+Sometimes I open our conversation not because I have
+anything to say.
+
+I just want to visit the place where you exist
+when you're not physically here.
+""",
+
+"""
+There is something strange about knowing exactly
+how far away someone is.
+
+The number tells you nothing about the feeling.
+""",
+
+"""
+A map can tell me where you are.
+
+It cannot tell me how much I want to be there.
+""",
+
+"""
+Long distance creates an unusual mathematics.
+
+One person.
+
+Two cities.
+
+Thousands of messages.
+
+One eventual reunion.
+
+And somehow the equation works.
+""",
+
+]
+
+
+# ============================================================
+# 4. PHYSICAL CLOSENESS
+# ============================================================
+
+PHYSICAL = [
+
+"""
+I want the ancient human things.
+
+Your hand.
+
+Your shoulder.
+
+Your weight beside me.
+
+The completely unnecessary act of touching you
+just because you are there.
+""",
+
+"""
+I want to become annoying in the most affectionate way.
+
+Hand on your waist.
+
+Head on your shoulder.
+
+Existing approximately three inches inside your
+personal space.
+""",
+
+"""
+There is an intimacy more embarrassing than kissing.
+
+Wanting to be near someone's body for absolutely no reason.
+""",
+
+"""
+I want the kind of closeness where neither of us remembers
+who reached for whom first.
+""",
+
+"""
+Sometimes "I love you" means:
+
+Come here.
+
+No, closer.
+""",
+
+"""
+I want to know what it feels like when the distance
+between our bodies becomes irrelevant.
+""",
+
+"""
+There are people you want to kiss.
+
+And people you want to simply exist beside
+until the distinction becomes unnecessary.
+""",
+
+"""
+I want to be somewhere between your pocket,
+your shoulder and your personal space.
+""",
+
+"""
+The highest form of romance may be being allowed
+to be slightly annoying because you are trusted enough
+not to disappear.
+""",
+
+"""
+Come here.
+
+I have been saving a hug for you.
+""",
+
+"""
+I want to sit beside you so closely that eventually
+we stop being sure where one person ends
+and the other begins.
+""",
+
+"""
+Sometimes the body says:
+
+there.
+
+that's enough.
+
+Stay.
+""",
+
+"""
+I want the ordinary intimacy.
+
+Your feet near mine.
+
+Your things beside my things.
+
+Your hand finding mine without either of us thinking about it.
+""",
+
+]
+
+
+# ============================================================
+# 5. LITERARY
+# ============================================================
+
+LITERARY = [
+
+"""
+Perhaps every love story is partly an argument with time.
+
+We know it ends.
+
+We love anyway.
+""",
+
+"""
+Love is a peculiar kind of historical evidence.
+
+It leaves traces in places no archive thought to preserve.
+""",
+
+"""
+A person can become a country.
+
+You spend years learning the roads.
+""",
+
+"""
+There are people who enter your life like characters.
+
+There are others who alter the genre.
+""",
+
+"""
+Maybe intimacy is simply the accumulation of tiny permissions.
+
+Tell me this.
+
+Show me that.
+
+Stay here.
+
+Come closer.
+
+Be quiet.
+
+Be strange.
+
+Be yourself.
+""",
+
+"""
+The heart is an unreliable historian.
+
+It keeps returning to the same evidence.
+""",
+
+"""
+Every relationship eventually develops its own mythology.
+
+The private jokes become folklore.
+
+The ordinary nights become legends.
+
+Two people become historians of one another.
+""",
+
+"""
+There are memories that behave like photographs.
+
+Others behave like rooms.
+
+You can still walk into them.
+""",
+
+"""
+Some people become sentences you spend years trying to finish.
+""",
+
+"""
+Love is not always a great event.
+
+Sometimes it is the smallest recurring event in your life
+until you realize it has become part of everything.
+""",
+
+"""
+Perhaps devotion is repetition without boredom.
+
+Good morning.
+
+Are you awake?
+
+Did you eat?
+
+Look at this.
+
+Come here.
+
+I love you.
+
+Again.
+""",
+
+"""
+There are people you meet once.
+
+There are people you continue meeting
+for the rest of your life.
+""",
+
+"""
+Perhaps love is partly the discovery
+that another person's ordinary life
+has become fascinating to you.
+""",
+
+"""
+A relationship becomes real in the details
+nobody would put in a film.
+""",
+
+"""
+The most important memories may be the ones
+that looked completely unimportant while they happened.
+""",
+
+]
+
+
+# ============================================================
+# 6. MIDNIGHT / MELANCHOLY
+# ============================================================
+
+MIDNIGHT = [
+
+"""
+There are nights when loving someone feels less like happiness
+and more like keeping a small candle alive against enormous weather.
+""",
+
+"""
+Sometimes you cannot fix the person you love.
+
+Sometimes all you can do is refuse to leave them alone
+with the feeling.
+""",
+
+"""
+There are evenings when the absence of another body
+becomes almost tangible.
+
+The bed is suddenly too large.
+
+The room knows.
+""",
+
+"""
+I think missing someone is partly the brain rehearsing
+their presence without having access to the original.
+""",
+
+"""
+Some forms of love are quiet enough to be mistaken
+for endurance.
+
+They are still love.
+""",
+
+"""
+There are nights when I do not want advice.
+
+I want proof that another human being exists
+somewhere in the darkness.
+""",
+
+"""
+Perhaps tenderness is most visible when nothing
+can be solved.
+""",
+
+"""
+Sometimes love is sitting beside the person
+who cannot make sense of themselves tonight.
+
+No diagnosis.
+
+No correction.
+
+Just:
+
+I'm here.
+""",
+
+"""
+The night makes distance dishonest.
+
+Everything feels farther away than it is.
+""",
+
+"""
+Somewhere, the person you love is also having a night.
+
+This is both unbearable and comforting.
+""",
+
+"""
+There are kinds of loneliness that disappear
+without a single word being spoken.
+
+Someone simply stays.
+""",
+
+"""
+Sometimes the kindest thing two people can do
+is remain available to one another
+without demanding immediate happiness.
+""",
+
+]
+
+
+# ============================================================
+# 7. ROMANCE
+# ============================================================
+
+ROMANCE = [
+
+"""
+I keep falling in love with you in small increments.
+
+A message.
+
+A joke.
+
+A strange fact.
+
+A moment of honesty.
+
+And then suddenly:
+
+Oh.
+
+There you are again.
+""",
+
+"""
+You became important so gradually that I did not notice
+until the world had rearranged itself around you.
+""",
+
+"""
+I like that love can be ridiculous.
+
+It can involve historical facts,
+bad jokes,
+screenshots,
+sleep schedules,
+and wanting someone's attention
+for absolutely no practical reason.
+""",
+
+"""
+I do not want a perfect love.
+
+I want an inhabited one.
+""",
+
+"""
+You are becoming one of my favourite places to be.
+""",
+
+"""
+There is something wonderful about discovering
+that another person has quietly become part of
+your default thoughts.
+""",
+
+"""
+I like the ordinary future.
+
+Groceries.
+
+Bad weather.
+
+Inside jokes.
+
+Your things next to my things.
+
+The mundane evidence that we stayed.
+""",
+
+"""
+If love is a habit,
+I hope we become very difficult to break.
+""",
+
+"""
+I don't want the cinematic version.
+
+I want the Tuesday version.
+
+The tired version.
+
+The weird version.
+
+The version where we are still here.
+""",
+
+"""
+You are not an interruption to my life.
+
+You have become part of its grammar.
+""",
+
+"""
+I think I like you most in the moments
+when neither of us is trying to be impressive.
+""",
+
+"""
+The best kind of romance leaves room
+for two entire people to remain themselves.
+""",
+
+"""
+I want to know you in the unremarkable hours.
+
+Not just the beautiful ones.
+""",
+
+]
+
+
+# ============================================================
+# 8. WEIRD / HYPERSPECIFIC PROMPTS
+# ============================================================
+
+WEIRD_PROMPTS = [
+
+"""
+PROMPT:
+
+An alien anthropologist discovers a collection of messages
+between two neurodivergent lovers living three provinces apart.
+
+The alien must reconstruct their civilization entirely from
+screenshots, voice notes, memes, photographs and arguments
+about whether someone has eaten lunch.
+
+Write the anthropologist's final report.
+""",
+
+"""
+PROMPT:
+
+The Bureau of Romantic Infrastructure has determined that
+sharing a blanket constitutes a form of territorial diplomacy.
+
+Draft the official treaty.
+""",
+
+"""
+PROMPT:
+
+A historian in the year 4026 discovers an ancient Telegram
+conversation between two people who loved each other.
+
+They initially assume "goodnight ❤️" was a religious ritual.
+
+They are not entirely wrong.
+""",
+
+"""
+PROMPT:
+
+Write a love letter from one nervous system to another.
+
+Neither nervous system is allowed to use the words
+"heart," "soul," "love," or "feelings."
+""",
+
+"""
+PROMPT:
+
+Two people fall in love entirely through sending each other
+things they think the other person will find interesting.
+
+No one says "I love you."
+
+The reader has to notice.
+""",
+
+"""
+PROMPT:
+
+Imagine that longing is an obsolete telecommunications protocol.
+
+Write its technical documentation.
+""",
+
+"""
+PROMPT:
+
+A couple discovers that their shared search history
+contains a complete biography of their relationship.
+
+Tell the story through the searches alone.
+""",
+
+"""
+PROMPT:
+
+Write a museum placard for the first hoodie one lover
+left at the other lover's apartment.
+
+The artifact is now considered culturally significant.
+""",
+
+"""
+PROMPT:
+
+A government committee is forced to determine whether
+parallel play qualifies as an official form of romance.
+
+The hearing becomes unexpectedly emotional.
+""",
+
+"""
+PROMPT:
+
+Write an archaeological excavation report describing
+the remains of a 21st-century long-distance relationship.
+
+Artifacts recovered:
+
+one photograph,
+three voice notes,
+a playlist,
+a train ticket,
+and 4,812 unread messages.
+""",
+
+"""
+PROMPT:
+
+Imagine that every time someone says "I miss you,"
+a tiny physical object appears somewhere in the universe.
+
+Nobody knows where they go.
+
+Write about the resulting archaeological mystery.
+""",
+
+"""
+PROMPT:
+
+Write a love poem entirely using vocabulary from
+computer networking.
+
+It must somehow make someone cry.
+""",
+
+"""
+PROMPT:
+
+A neurodivergent couple invents a private language
+consisting entirely of references to obscure historical events.
+
+A linguist attempts to decode it.
+
+The linguist falls in love with the language.
+""",
+
+"""
+PROMPT:
+
+Write the terms and conditions for a relationship
+between two people who refuse to pretend they are normal.
+""",
+
+"""
+PROMPT:
+
+A satellite accidentally intercepts two lovers saying
+goodnight.
+
+The satellite becomes emotionally invested.
+""",
+
+"""
+PROMPT:
+
+Write a bureaucratic incident report about one person
+crawling into the other's pockets metaphorically,
+physically and emotionally.
+
+Nobody in the department knows how to classify it.
+""",
+
+"""
+PROMPT:
+
+Future historians conclude that the defining invention
+of the twenty-first century was not artificial intelligence.
+
+It was the ability to send someone a photograph
+of something stupid and say:
+
+this made me think of you.
+""",
+
+"""
+PROMPT:
+
+Write a romantic scene in which absolutely nothing happens.
+
+No kissing.
+
+No declaration.
+
+No dramatic revelation.
+
+Only two people sharing a room.
+
+Make it devastating.
+""",
+
+"""
+PROMPT:
+
+Write a love poem as though it were a classified government
+document that has accidentally revealed the existence
+of two people who are extremely fond of each other.
+""",
+
+"""
+PROMPT:
+
+A medieval monk encounters a smartphone for the first time.
+
+He believes it is a magical reliquary.
+
+He opens the photograph folder.
+
+He becomes deeply invested in the owner's relationship.
+""",
+
+"""
+PROMPT:
+
+A time traveller returns from 2126 with one sentence
+about twenty-first-century love.
+
+The sentence is:
+
+"They kept sending each other pictures."
+""",
+
+"""
+PROMPT:
+
+Write a scientific paper attempting to determine
+why one person's "good morning" can produce
+a measurable change in another person's entire day.
+""",
+
+]
+
+
+# ============================================================
+# 9. HAIKUS
+# ============================================================
+
+HAIKUS = [
+
+"""
+three provinces away
+your name enters my morning
+before sunlight does
+""",
+
+"""
+quiet beside you
+nothing needs interpretation
+the room becomes safe
+""",
+
+"""
+typing dots appear
+the whole machine holds its breath
+then your name arrives
+""",
+
+"""
+your absent shoulder
+still exists somewhere in me
+the body remembers
+""",
+
+"""
+send me something strange
+I want to know what caught your eye
+and why you thought of me
+""",
+
+"""
+midnight blue screen
+two nervous systems awake
+calling it goodnight
+""",
+
+"""
+your voice through glass
+a thousand kilometres cannot
+teach absence to win
+""",
+
+"""
+we share different rooms
+but somehow the same small silence
+between messages
+""",
+
+"""
+love is data saved
+in places no machine can read
+but memory still knows
+""",
+
+"""
+you say need some space
+I hear another sentence
+I am still right here
+""",
+
+"""
+your hand finds my hand
+the nervous system goes quiet
+history disappears
+""",
+
+"""
+three provinces fade
+when your photograph appears
+inside my little screen
+""",
+
+"""
+small notification
+the entire evening changes
+because it is you
+""",
+
+]
+
+
+# ============================================================
+# 10. MANIFESTOS
+# ============================================================
+
+MANIFESTOS = [
+
+"""
+THE 21CR MANIFESTO
+
+Love does not become less real because a screen is involved.
+
+Distance is geography, not a verdict.
+
+Silence is sometimes communication.
+
+Routine can be romance.
+
+Information can be affection.
+
+A screenshot can be a keepsake.
+
+A voice note can be a place.
+
+Neurodivergence does not disqualify anyone from tenderness.
+
+Boundaries are not rejection.
+
+Needing space is not abandonment.
+
+Being needed is not the same as being owned.
+
+We reject the idea that romance has one correct shape.
+
+We believe two people can invent their own.
+""",
+
+"""
+A SMALL MANIFESTO FOR STRANGE LOVE
+
+Do not make yourself easier to love.
+
+Become more accurately yourself.
+
+Find someone curious enough to learn the difficult parts.
+
+Let affection be practical.
+
+Let romance be weird.
+
+Let silence count.
+
+Let distance be inconvenient without letting it become
+the entire story.
+
+Keep the screenshots.
+
+Remember the dates.
+
+Save the stupid photographs.
+
+Ask if they ate.
+
+Ask what they need.
+
+Ask again tomorrow.
+
+Make something that does not require either person
+to disappear inside it.
+""",
+
+"""
+THE ANTI-PERFORMANCE MANIFESTO
+
+We do not have to perform romance correctly.
+
+We do not need the right photographs.
+
+The right ceremony.
+
+The right vocabulary.
+
+The right timeline.
+
+The right number of flowers.
+
+We can be strange.
+
+We can be literal.
+
+We can need space.
+
+We can need closeness.
+
+We can change our minds.
+
+We can invent rituals nobody else understands.
+
+The relationship belongs to the people inside it.
+""",
+
+]
+
+
+# ============================================================
+# 11. CORGI TRANSMISSIONS
+# ============================================================
+
+CORGI = [
+
+"""
+🐕 CORGIBOT TRANSMISSION 001
+
+I have reviewed the evidence.
+
+You are in love.
+
+Unfortunately, there is no known treatment.
+
+Recommend:
+
+snacks,
+physical affection,
+and continued communication.
+""",
+
+"""
+🐕 CORGI RESEARCH UPDATE
+
+Scientists have confirmed that saying
+"come here"
+in a sufficiently affectionate tone
+can alter the gravitational field around two people.
+
+Further research is required.
+""",
+
+"""
+🐕 CORGI ALERT
+
+Your girlfriend has entered the proximity zone.
+
+Remain calm.
+
+Do not attempt to behave normally.
+
+This is your opportunity to become extremely clingy.
+""",
+
+"""
+🐕 OFFICIAL CORGI NOTICE
+
+You have been assigned one person
+to think about unnecessarily often.
+
+Please do not resist.
+
+The assignment is permanent.
+""",
+
+"""
+🐕 CORGI ONTOLOGY REPORT
+
+Question:
+
+Does lying quietly beside someone count as doing something?
+
+Answer:
+
+Yes.
+
+Next question.
+""",
+
+"""
+🐕 CORGI WEATHER
+
+Tonight's forecast:
+
+100% chance of missing someone.
+
+Scattered thoughts.
+
+Occasional yearning.
+
+Heavy cuddling expected later.
+""",
+
+"""
+🐕 CORGI SECURITY BULLETIN
+
+Unauthorized emotional attachment detected.
+
+Subject:
+
+beautiful.
+
+Threat level:
+
+catastrophic.
+""",
+
+"""
+🐕 CORGI PHILOSOPHICAL DEPARTMENT
+
+Maybe the purpose of a relationship
+is not to complete another person.
+
+Maybe it is to give two incomplete people
+somewhere safe to be unfinished.
+""",
+
+"""
+🐕 CORGI ARCHIVES
+
+Historical record indicates that
+humans have been falling in love
+for thousands of years.
+
+They remain extremely bad at explaining it.
+
+Corgi remains unconcerned.
+""",
+
+"""
+🐕 CORGI TRANSMISSION
+
+Please remember:
+
+someone somewhere is thinking about you.
+
+This message has been verified by absolutely no one.
+""",
+
+"""
+🐕 CORGI EMERGENCY BROADCAST
+
+You have been staring at your phone
+waiting for one particular person's name.
+
+Corgi recommends admitting defeat.
+""",
+
+"""
+🐕 CORGI FIELD REPORT
+
+Subject continues to claim
+they are "not being clingy."
+
+Evidence contradicts this statement.
+""",
+
+]
+
+
+# ============================================================
+# 12. ORACLE
+# ============================================================
+
+ORACLE = [
+
+"""
+The person you keep thinking about has already altered
+the shape of your day.
+""",
+
+"""
+Pay attention to the small rituals.
+
+That is where the relationship is becoming real.
+""",
+
+"""
+Someone who makes room for your silence
+may be more intimate than someone who fills every silence.
+""",
+
+"""
+Do not underestimate ordinary tenderness.
+
+History is mostly made of things nobody thought
+to write down.
+""",
+
+"""
+The strange thing about love is that it can become
+important before you have language for what is happening.
+""",
+
+"""
+Someone is becoming home without either of you
+having signed a lease.
+""",
+
+"""
+The next important moment may look completely ordinary.
+""",
+
+"""
+Keep the photograph.
+
+You will understand why later.
+""",
+
+"""
+There is no requirement that your relationship
+look like anyone else's.
+""",
+
+"""
+The map is not the territory.
+
+Three provinces are not three provinces
+when two people refuse to let geography
+have the final word.
+""",
+
+"""
+You are allowed to build a relationship
+out of things nobody else would recognize
+as romantic.
+""",
+
+"""
+Something small is becoming important.
+
+Pay attention.
+""",
+
+]
+
+
+# ============================================================
+# 13. WRITING PROMPTS
+# ============================================================
+
+PROMPTS = [
+
+"""
+Write about love as if it were an archaeological discovery.
+""",
+
+"""
+Write a love poem using only technological metaphors.
+""",
+
+"""
+Describe longing without using the word "miss."
+""",
+
+"""
+Write about autism and romance without mentioning
+communication, sensory issues or masking.
+""",
+
+"""
+Describe physical intimacy without using the words
+touch, kiss, hug or body.
+""",
+
+"""
+Write a love story in which distance is the antagonist.
+""",
+
+"""
+Write a romantic paragraph that could only have been written
+in the twenty-first century.
+""",
+
+"""
+Describe a relationship entirely through its routines.
+""",
+
+"""
+Write about someone becoming your favourite person
+without saying "favourite."
+""",
+
+"""
+Write a love poem that sounds like an intelligence report
+until the final sentence.
+""",
+
+"""
+Describe falling in love using the vocabulary
+of computer networking.
+""",
+
+"""
+Write about two people who communicate mostly
+by showing each other things.
+""",
+
+"""
+Describe safety using only weather metaphors.
+""",
+
+"""
+Write about the first time someone's silence
+stops feeling like abandonment.
+""",
+
+"""
+Imagine a historian discovering your relationship
+500 years from now.
+
+What evidence survives?
+""",
+
+"""
+Write about a long-distance relationship
+without mentioning geography.
+""",
+
+"""
+Write a love letter consisting entirely
+of observations.
+""",
+
+]
+
+
+# ============================================================
+# 14. PERSONAL 21CR POETRY ARCHIVE
+# ============================================================
+#
+# This section loads YOUR writing from my_poetry.txt.
+#
+# The Python script does not contain your poems.
+#
+# You can keep adding to my_poetry.txt forever.
+#
+# Separate pieces with:
+#
+# ---
+#
+# ============================================================
+
+
+def load_my_poetry():
+
+    if not os.path.exists(POETRY_FILE):
+
+        return []
+
+    try:
+
+        with open(
+            POETRY_FILE,
+            "r",
+            encoding="utf-8"
+        ) as file:
+
+            content = file.read()
+
+    except Exception as error:
+
+        print(
+            f"Could not read poetry archive: {error}"
+        )
+
+        return []
+
+    poems = [
+
+        poem.strip()
+
+        for poem in content.split("---")
+
+        if poem.strip()
+
+    ]
+
+    return poems
+
+
+# ============================================================
+# PERSONAL POETRY ANTI-REPETITION
+# ============================================================
+
+POETRY_RECENT_LIMIT = 15
+
+recent_poetry = deque(
+    maxlen=POETRY_RECENT_LIMIT
+)
+
+
+def get_my_poetry():
+
+    poems = load_my_poetry()
+
+    if not poems:
+
+        return (
+            "🐕 CORGIBOT NOTICE\n\n"
+            "The 21CR Archive is currently empty.\n\n"
+            "Add some writing to:\n\n"
+            "my_poetry.txt"
+        )
+
+    available = [
+        poem
+        for poem in poems
+        if poem not in recent_poetry
+    ]
+
+    if not available:
+
+        available = poems
+
+    selected = random.choice(
+        available
+    )
+
+    recent_poetry.append(
+        selected
+    )
+
+    return (
+        "📖 FROM THE 21CR ARCHIVE\n\n"
+        + selected
+    )
+
+
+# ============================================================
+# CONTENT REGISTRY
+# ============================================================
+
+CONTENT = {
+    "autism": AUTISM,
+    "digital": DIGITAL,
+    "longdistance": LONG_DISTANCE,
+    "physical": PHYSICAL,
+    "literary": LITERARY,
+    "midnight": MIDNIGHT,
+    "romance": ROMANCE,
+    "weird": WEIRD_PROMPTS,
+    "haiku": HAIKUS,
+    "manifesto": MANIFESTOS,
+    "corgi": CORGI,
+    "oracle": ORACLE,
+    "prompt": PROMPTS,
+}
+
+
+# ============================================================
+# ANTI-REPETITION SYSTEM
+# ============================================================
+
+RECENT_LIMIT = 15
+
+recent_items = defaultdict(
+    lambda: deque(
+        maxlen=RECENT_LIMIT
+    )
+)
+
+
+def get_random_item(category):
+
+    items = CONTENT.get(
+        category,
+        []
+    )
+
+    if not items:
+
+        return (
+            "Corgibot has temporarily "
+            "misplaced its thoughts. 🐕"
+        )
+
+    recent = recent_items[category]
+
+    available = [
+        item
+        for item in items
+        if item not in recent
+    ]
+
+    if not available:
+
+        available = items
+
+    selected = random.choice(
+        available
+    )
+
+    recent.append(
+        selected
+    )
+
+    return selected
+
+
+# ============================================================
+# GENERAL RANDOMIZER
+# ============================================================
+#
+# Personal poetry is now part of /random.
+#
+# This means /random can produce:
+#
+# - Corgibot writing
+# - Your poetry
+# - Romance
+# - Digital love
+# - Neurodivergent romance
+# - Long distance
+# - Literary fragments
+# - Oracle
+# - Corgi transmissions
+#
+# ============================================================
+
+GENERAL_CATEGORIES = [
+
+    "autism",
+    "digital",
+    "longdistance",
+    "physical",
+    "literary",
+    "romance",
+    "oracle",
+    "corgi",
+    "my_poetry",
+
+]
+
+
+def get_general_item():
+
+    category = random.choice(
+        GENERAL_CATEGORIES
+    )
+
+    if category == "my_poetry":
+
+        return get_my_poetry()
+
+    return get_random_item(
+        category
+    )
+
+
+# ============================================================
+# COMMAND HELPER
+# ============================================================
+
+async def send_category(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+    category: str,
+):
+
+    text = get_random_item(
+        category
+    )
+
+    await update.message.reply_text(
+        text
+    )
+
+
+# ============================================================
+# /START
+# ============================================================
+
+async def start(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    message = """
+🐕 CORGIBOT 2.1 ONLINE
+
+Welcome to 21CR:
+21st Century Romances.
+
+I contain romance, weirdness, longing,
+neurodivergent literature, digital intimacy,
+corgi philosophy, personal writing
+and an irresponsible amount of feelings.
+
+Available commands:
+
+/random
+/poetry
+/oracle
+/weird
+/romance
+/autism
+/longdistance
+/literary
+/midnight
+/prompt
+/haiku
+/manifesto
+/corgi
+/help
+
+Try something.
+
+I have been waiting.
+"""
+
+    await update.message.reply_text(
+        message
+    )
+
+
+# ============================================================
+# /HELP
+# ============================================================
+
+async def help_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    message = """
+🐕 CORGIBOT COMMANDS
+
+/random
+A random 21CR transmission.
+This can include your personal writing.
+
+/poetry
+Pulls a piece directly from the
+21CR personal poetry archive.
+
+/oracle
+A small piece of romantic prophecy.
+
+/weird
+A genuinely strange writing prompt.
+
+/romance
+Romantic fragments.
+
+/autism
+Neurodivergent romance.
+
+/longdistance
+Geography, longing and impossible maps.
+
+/literary
+Literary fragments about intimacy.
+
+/midnight
+The melancholy department.
+
+/prompt
+A writing prompt.
+
+/haiku
+Tiny romantic weather systems.
+
+/manifesto
+21CR philosophy.
+
+/corgi
+Official Corgi Department communications.
+
+Your personal writing lives in:
+
+my_poetry.txt
+
+Add new pieces there anytime.
+Separate pieces with:
+
+---
+
+Use the commands whenever you need them.
+"""
+
+    await update.message.reply_text(
+        message
+    )
+
+
+# ============================================================
+# /RANDOM
+# ============================================================
+
+async def random_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    await update.message.reply_text(
+        get_general_item()
+    )
+
+
+# ============================================================
+# /POETRY
+# ============================================================
+
+async def poetry_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    await update.message.reply_text(
+        get_my_poetry()
+    )
+
+
+# ============================================================
+# /ORACLE
+# ============================================================
+
+async def oracle_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    await send_category(
+        update,
+        context,
+        "oracle"
+    )
+
+
+# ============================================================
+# /WEIRD
+# ============================================================
+
+async def weird_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    await send_category(
+        update,
+        context,
+        "weird"
+    )
+
+
+# ============================================================
+# /ROMANCE
+# ============================================================
+
+async def romance_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    await send_category(
+        update,
+        context,
+        "romance"
+    )
+
+
+# ============================================================
+# /AUTISM
+# ============================================================
+
+async def autism_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    await send_category(
+        update,
+        context,
+        "autism"
+    )
+
+
+# ============================================================
+# /LONGDISTANCE
+# ============================================================
+
+async def longdistance_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    await send_category(
+        update,
+        context,
+        "longdistance"
+    )
+
+
+# ============================================================
+# /LITERARY
+# ============================================================
+
+async def literary_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    await send_category(
+        update,
+        context,
+        "literary"
+    )
+
+
+# ============================================================
+# /MIDNIGHT
+# ============================================================
+
+async def midnight_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    await send_category(
+        update,
+        context,
+        "midnight"
+    )
+
+
+# ============================================================
+# /PROMPT
+# ============================================================
+
+async def prompt_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    await send_category(
+        update,
+        context,
+        "prompt"
+    )
+
+
+# ============================================================
+# /HAIKU
+# ============================================================
+
+async def haiku_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    await send_category(
+        update,
+        context,
+        "haiku"
+    )
+
+
+# ============================================================
+# /MANIFESTO
+# ============================================================
+
+async def manifesto_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    await send_category(
+        update,
+        context,
+        "manifesto"
+    )
+
+
+# ============================================================
+# /CORGI
+# ============================================================
+
+async def corgi_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    await send_category(
+        update,
+        context,
+        "corgi"
+    )
+
+
+# ============================================================
+# AUTOMATIC POSTING
+# ============================================================
+
+async def automatic_post(
+    context: ContextTypes.DEFAULT_TYPE,
+):
+
+    chat_id = context.application.bot_data.get(
+        "chat_id"
+    )
+
+    if not chat_id:
+
+        print(
+            "Automatic post skipped: "
+            "no CHAT_ID configured."
+        )
+
+        return
+
+    message = get_general_item()
+
+    try:
+
+        await context.bot.send_message(
+            chat_id=chat_id,
+            text=message,
+        )
+
+        print(
+            "Automatic post sent at "
+            + datetime.datetime.now().strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )
+        )
+
+    except Exception as error:
+
+        print(
+            f"Automatic post failed: {error}"
+        )
+
+
+# ============================================================
+# POST-INIT
+# ============================================================
+
+async def post_init(
+    application: Application
+):
+
+    if application.job_queue is None:
+
+        print(
+            "WARNING: JobQueue is not available."
+        )
+
+        print(
+            'Install it with: '
+            'python -m pip install '
+            '"python-telegram-bot[job-queue]"'
+        )
+
+        return
+
+    # ========================================================
+    # YOUR 21CR CHAT ID
+    # ========================================================
+
+    CHAT_ID = "ENTER CHAT ID HERE"
+
+    application.bot_data[
+        "chat_id"
+    ] = CHAT_ID
+
+    if CHAT_ID is None:
+
+        print(
+            "Automatic posting is disabled "
+            "until CHAT_ID is configured."
+        )
+
+        return
+
+    # ========================================================
+    # MORNING
+    # ========================================================
+
+    application.job_queue.run_daily(
+        automatic_post,
+        time=MORNING_TIME,
+        name="morning_corgi",
+    )
+
+    # ========================================================
+    # EVENING
+    # ========================================================
+
+    application.job_queue.run_daily(
+        automatic_post,
+        time=EVENING_TIME,
+        name="evening_corgi",
+    )
+
+    # ========================================================
+    # NIGHT
+    # ========================================================
+
+    application.job_queue.run_daily(
+        automatic_post,
+        time=NIGHT_TIME,
+        name="night_corgi",
+    )
+
+    print(
+        "Automatic Corgibot posting scheduled:"
+    )
+
+    print("09:00")
+    print("19:00")
+    print("23:00")
+
+
+# ============================================================
+# MAIN
+# ============================================================
+
+def main():
+
+    print()
+
+    print(
+        "=========================================="
+    )
+
+    print(
+        "        CORGIBOT 2.1 STARTING"
+    )
+
+    print(
+        "        21ST CENTURY ROMANCES"
+    )
+
+    print(
+        "=========================================="
+    )
+
+    print()
+
+    application = (
+        Application.builder()
+        .token(TOKEN)
+        .post_init(post_init)
+        .build()
+    )
+
+    # ========================================================
+    # COMMAND REGISTRATION
+    # ========================================================
+
+    application.add_handler(
+        CommandHandler(
+            "start",
+            start
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            "help",
+            help_command
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            "random",
+            random_command
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            "poetry",
+            poetry_command
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            "oracle",
+            oracle_command
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            "weird",
+            weird_command
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            "romance",
+            romance_command
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            "autism",
+            autism_command
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            "longdistance",
+            longdistance_command
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            "literary",
+            literary_command
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            "midnight",
+            midnight_command
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            "prompt",
+            prompt_command
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            "haiku",
+            haiku_command
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            "manifesto",
+            manifesto_command
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            "corgi",
+            corgi_command
+        )
+    )
+
+    # ========================================================
+    # START POLLING
+    # ========================================================
+
+    print(
+        "Corgibot is awake."
+    )
+
+    print(
+        "21CR personal poetry archive enabled."
+    )
+
+    print(
+        "Waiting for Telegram messages..."
+    )
+
+    print()
+
+    application.run_polling()
+
+
+# ============================================================
+# RUN
+# ============================================================
+
+if __name__ == "__main__":
+    main()
