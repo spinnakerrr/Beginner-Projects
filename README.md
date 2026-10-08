@@ -4,7 +4,7 @@ Aug-09-2026 — Aug-16-2026 Misc Tests/Attempts/Ideas
 
 # CorgiBot 2.1 — 21st Century Romances
 
-CorgiBot is a Telegram bot that shares romantic and literary writing, prompts, haiku, oracle messages, and corgi-themed transmissions. It can also draw from a personal poetry archive stored in a separate text file.
+CorgiBot is a Telegram bot that shares romantic and literary writing, prompts, haiku, oracle messages, and corgi-themed transmissions. It can also draw from a personal poetry archive stored in a separate text file. This text file is available upon request, but the idea is to individualize it for your own creative writing projects and to incorporate your own concepts.
 
 ## Features
 
